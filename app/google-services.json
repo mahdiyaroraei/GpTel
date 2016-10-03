@@ -1,0 +1,61 @@
+{
+  "project_info": {
+    "project_number": "551487975422",
+    "project_id": "firebase-traccar"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:551487975422:android:55aa9698d6723eb6",
+        "android_client_info": {
+          "package_name": "parhoonco.ir.traccar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOLU4RcT6GUzpNapV_X6ElC36TsG1IHSc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:551487975422:android:acf6938c3956820a",
+        "android_client_info": {
+          "package_name": "ir.parhoonco.traccar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOLU4RcT6GUzpNapV_X6ElC36TsG1IHSc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

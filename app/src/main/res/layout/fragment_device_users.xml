@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/add_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:animateLayoutChanges="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/add_user_btn"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:background="?attr/selectableItemBackground"
+            android:drawableRight="@drawable/ic_add_circle"
+            android:gravity="center"
+            android:text="افزودن"
+            android:textColor="@color/btn_text_color" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/scroll_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical" />
+    </ScrollView>
+
+</LinearLayout>

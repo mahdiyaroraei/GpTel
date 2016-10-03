@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#1A1D22</color>
+    <color name="colorAccent">#25817b</color>
+
+    <color name="mdtp_accent_color">#005396</color>
+    <color name="mdtp_accent_color_dark">#003679</color>
+
+    <!--Dialog-->
+    <color name="error">#DA5F6A</color>
+    <color name="error_dark">#81252d</color>
+    <color name="success">#69da5f</color>
+    <color name="success_dark">#288125</color>
+    <color name="config">#4b862d</color>
+    <color name="config_dark">#2f6315</color>
+    <color name="text_color_gray">#c9c9c9</color>
+    <color name="text_color_desc">#898989</color>
+
+    <!--Events-->
+    <color name="offline">#49440d</color>
+    <color name="online">#4b862d</color>
+    <color name="devicemoving">#bc6c15</color>
+    <color name="devicestopped">#7b1515</color>
+    <color name="deviceoverspeedon">#287fa4</color>
+    <color name="deviceoverspeedoff">#d7432f</color>
+    <color name="autogeofenceon">#287fa4</color>
+    <color name="autogeofenceoff">#d7432f</color>
+    <color name="geofenceenter">#49440d</color>
+    <color name="geofenceexit">#4b862d</color>
+    <color name="alarmburgularon">#287fa4</color>
+    <color name="alarmburgularoff">#d7432f</color>
+    <color name="deviceoffline">#49440d</color>
+    <color name="deviceonline">#4b862d</color>
+    <color name="minvoltageon">#287fa4</color>
+    <color name="minvoltageoff">#d7432f</color>
+    <color name="protectionviolationoff">#d7432f</color>
+    <color name="protectionviolationon">#287fa4</color>
+    <color name="theft">#4b862d</color>
+
+    <color name="icon_color">#2FBA3F</color>
+
+</resources>

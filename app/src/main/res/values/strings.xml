@@ -1,0 +1,69 @@
+<resources>
+    <string name="app_name">GPTEL</string>
+    <string name="hint_phone">(933) 333-3333</string>
+    <string name="phone_verify">مرحله بعد</string>
+    <string name="hint_password">پسورد خود را تایپ کنید</string>
+    <string name="hint_password_retype">پسورد خود را دوباره تایپ کنید</string>
+    <string name="login">ورود</string>
+    <string name="car_info">داشبورد</string>
+    <string name="car_location">نقشه</string>
+    <string name="services">خدمات</string>
+    <string name="settings">تنظیمات</string>
+    <string name="internet_dialog_title">شما به اینترنت متصل نیستید</string>
+    <string name="internet_dialog_message">آیا مایلید برای دریافت و نمایش اطلاعات وضعیتی خودرو از SMS استفاده نمائید؟</string>
+    <string name="dialog_ok">بله</string>
+    <string name="dialog_cancel">خیر</string>
+    <string name="sms_command_sending">در حال ارسال دستور به دستگاه...</string>
+    <string name="sms_command_sent">دستور با موفقیت ارسال شد.</string>
+    <string name="sms_command_delivered">دستور توسط دستگاه با موفقیت دریافت شد. لطفا تا دریافت پاسخ دستگاه منتظر بمانید...</string>
+    <string name="sms_command_receive">پاسخ از سمت دستگاه با موفقیت دریافت شد.</string>
+    <string name="oil">تعویض روغن</string>
+    <string name="gearoil"> تعویض واسکازین</string>
+    <string name="airfilter">تعویض فیلتر آب</string>
+    <string name="oilfilter">تعویض فیلتر روغن</string>
+    <string name="brakeoil">تعویض روغن ترمز</string>
+    <string name="timingbelt">تعویض تسمه تایم</string>
+    <string name="brakepad">تعویض لنت ترمز</string>
+    <string name="tirechange">تعویض تایر</string>
+    <string name="tireswap">جابجایی تایر</string>
+    <string name="antifreeze">تعویض ضد یخ</string>
+    <string name="service_base_time">زمان (روز)</string>
+    <string name="service_base_distance">مسافت (Km)</string>
+    <string name="error_happen">مشکلی پیش آمده است</string>
+    <string name="internet_problem">به اینترنت متصل شوید</string>
+    <string name="sms_verify_guide">برای ورود شماره ی همراه خود را وارد نمایید</string>
+    <string name="welcome">به سامانه هوشمند رهیابی خودرو خوش آمدید.</string>
+    <string name="data_send_mode">شیوه ارسال دیتا</string>
+    <string name="protection_mode">حالت حفاظت</string>
+    <string name="stealing_mode">حالت دزدیده شده</string>
+    <string name="auto_off">خاموشی خودکار</string>
+    <string name="min_voltage">کمترین حد ولتاژ</string>
+    <string name="max_speed">بیشترین سرعت ماشین</string>
+    <string name="min_angle">کمترین زاویه</string>
+    <string name="geo_fence_lat">محدوده جغرافیایی (عرض)</string>
+    <string name="geo_fence_long">محدوده جغرافیایی (طول)</string>
+    <string name="geo_fence_radius">محدوده جغرافیایی (شعاع)</string>
+
+    <!--Events-->
+    <string name="offline">دستگاه خاموش</string>
+    <string name="online">#دستگاه روشن</string>
+    <string name="devicemoving">در حال حرکت</string>
+    <string name="devicestopped">ایستاده</string>
+    <string name="deviceoverspeedon">deviceOverspeedOn</string>
+    <string name="deviceoverspeedoff">deviceOverspeedOff</string>
+    <string name="autogeofenceon">autogeofenceOn</string>
+    <string name="autogeofenceoff">autogeofenceOff</string>
+    <string name="geofenceenter">geofenceEnter</string>
+    <string name="geofenceexit">geofenceExit</string>
+    <string name="alarmburgularon">alarmBurgularOn</string>
+    <string name="alarmburgularoff">alarmBurgularOff</string>
+    <string name="minvoltageon">minvoltageOn</string>
+    <string name="minvoltageoff">minvoltageOff</string>
+    <string name="protectionviolationoff">protectionViolationOff</string>
+    <string name="protectionviolationon">protectionViolationOn</string>
+
+    <string name="theft">theft</string>
+    <!--Errors-->
+    <string name="invalid_user_id_error">شماره تلفن شما در سامانه وجود ندارد.</string>
+
+</resources>

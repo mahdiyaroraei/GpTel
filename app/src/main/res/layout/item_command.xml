@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@color/deviceonline"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/command_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="test"
+        android:textColor="#FFF" />
+
+    <TextView
+        android:id="@+id/attr_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:paddingRight="12dp"
+        android:layout_toLeftOf="@+id/command_txt"
+        android:text="test"
+        android:textColor="#FFF" />
+
+    <ImageView
+        android:id="@+id/clock_icn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/clock"
+        android:text="test" />
+
+    <TextView
+        android:id="@+id/time_txt"
+        android:layout_width="wrap_content"
+        android:textSize="16sp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/clock_icn"
+        android:text="test"
+        android:textColor="#FFF" />
+</RelativeLayout>

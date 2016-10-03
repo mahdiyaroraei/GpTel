@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/indicatorLayout"
+        android:layout_marginTop="7dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/valueLayout"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/valueEditText"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:textColor="#fff"
+                android:inputType="number" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/upBtn"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/ic_plus"/>
+
+                <Button
+                    android:id="@+id/downBtn"
+                    android:layout_marginTop="7dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/ic_minus"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/switchCompat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/config"
+            android:checked="true"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/indicatorLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:paddingRight="7dp"
+            android:textSize="13sp"
+            android:layout_marginTop="-2dp"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:layout_gravity="center_vertical"
+            android:text="این یک متن انتخابی است" />
+        <ImageView
+            android:id="@+id/icon"
+            android:paddingRight="7dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</RelativeLayout>
