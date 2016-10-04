@@ -83,4 +83,33 @@
     <string name="invalid_key">کلید وارد شده صحیح نیست.</string>
     <string name="check_internet">اتصال اینترنت خود را بررسی کنید.</string>
 
+    <!--Commands-->
+    <string name="getgps">دریافت موقعیت</string>
+    <string name="getminangle">دریافت حداقل زاویه</string>
+    <string name="setminangle">تنظیم حداقل زاویه</string>
+    <string name="getminperiod">دریافت حداقل زمان</string>
+    <string name="setminperiod">تنظیم حداقل زمان</string>
+    <string name="getsendperiod">دریافت زمان ارسال</string>
+    <string name="setsendperiod">تنظیم زمان ارسال</string>
+    <string name="getmindistance">دریافت حداقل مسافت</string>
+    <string name="setmindistance">تنظیم حداقل مسافت</string>
+    <string name="getminvoltage">دریافت حداقل ولتاژ</string>
+    <string name="setminvoltage">تنظیم حداقل ولتاژ</string>
+    <string name="getmaxspeed">دریافت حداکثر سرعت</string>
+    <string name="setmaxspeed">تنظیم حداکثر سرعت</string>
+    <string name="gettheftalarm">دریافت وضعیت دزدگیر</string>
+    <string name="settheftalarm">تنظیم وضعیت دزدگیر</string>
+    <string name="getgeofence">دریافت وضعیت محدوده مجاز</string>
+    <string name="setgeofence">تنظیم وضعیت محدوده مجاز</string>
+    <string name="getgeofencelatitude">دریافت عرض محدوده مجاز</string>
+    <string name="setgeofencelatitude">تنظیم عرض محدوده مجاز</string>
+    <string name="getgeofencelongitude">دریافت طول محدوده مجاز</string>
+    <string name="setgeofencelongitude">تنظیم طول محدوده مجاز</string>
+    <string name="getgeofenceradius">دریافت شعاع محدوده مجاز</string>
+    <string name="setgeofenceradius">تنظیم شعاع محدوده مجاز</string>
+    <string name="getautogeofence">دریافت وضعیت محدوده خودکار</string>
+    <string name="setautogeofence">تنظیم وضعیت محدوده خودکار</string>
+    <string name="getmaster">دریافت سرگروه</string>
+    <string name="setmaster">تنظیم سرگروه</string>
+
 </resources>

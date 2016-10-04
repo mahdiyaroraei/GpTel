@@ -85,9 +85,11 @@ public class CommandFragment extends Fragment {
             if (commands.get(position).getStatus().equals("pending")) {
                 holder.layout.setBackgroundColor(Color.parseColor("#bc6c15"));
             }
-            holder.commandTextView.setText(commands.get(position).getType());
+            try {
+                holder.commandTextView.setText(getContext().getResources().getIdentifier(commands.get(position).getType() , "string" , getContext().getPackageName()));
+            }catch (Exception e){}
             holder.attrTextView.setText(commands.get(position).getAttributes());
-            PersianCalendar calendar = new PersianCalendar(commands.get(position).getTime());
+            PersianCalendar calendar = new PersianCalendar(commands.get(position).getTime() * 1000);
             calendar.setTimeZone(TimeZone.getDefault());
             holder.timeTextView.setText(calendar.getPersianShortDateTime());
         }
