@@ -310,6 +310,7 @@ public class VerificationFragment extends Fragment implements Callback<Verify> {
             submitBtn.setEnabled(true);
         } else if (response.code() == 200) {
             CarFragment.devices = response.body().getDevices();
+            timer.cancel();
             for (Device device :
                     response.body().getDevices()) {
                 device.save();

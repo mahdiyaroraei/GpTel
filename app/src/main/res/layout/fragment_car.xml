@@ -140,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:padding="20dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/car_door_light_on" />
+                android:src="@drawable/car" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -182,7 +182,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:paddingTop="15dp"
-                    android:src="@drawable/temperture" />
+                    android:src="@drawable/freeze" />
             </RelativeLayout>
 
             <RelativeLayout

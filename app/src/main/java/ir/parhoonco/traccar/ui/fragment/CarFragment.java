@@ -100,6 +100,7 @@ public class CarFragment extends Fragment {
         if (defaultDevice != null) {
             deviceNameTextView.setText(defaultDevice.getName());
         }
+        showDeviceInfo(defaultDevice.getDeviceInfo());
         Call<DeviceInfo> deviceInfoCall = ApplicationLoader.api.getDeviceInfo(defaultImei);
         deviceInfoCall.enqueue(new Callback<DeviceInfo>() {
             @Override
@@ -115,7 +116,6 @@ public class CarFragment extends Fragment {
 
             @Override
             public void onFailure(Call<DeviceInfo> call, Throwable t) {
-                showDeviceInfo(defaultDevice.getDeviceInfo());
             }
         });
 
