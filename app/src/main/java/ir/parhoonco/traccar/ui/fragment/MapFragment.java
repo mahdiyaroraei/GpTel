@@ -847,6 +847,7 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
             CarFragment.defaultDevice.save();
         }
         if (devicePosition.getLat() != 0) {
+            removeMarkers();
             mapView.setCenter(new LatLong(devicePosition.getLat(), devicePosition.getLon()));
             addMarker(devicePosition, other_pin_drawable);
         }
