@@ -18,16 +18,22 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+
 import ir.parhoonco.traccar.R;
 import ir.parhoonco.traccar.core.ApplicationLoader;
 import ir.parhoonco.traccar.core.SharedPreferenceHelper;
 import ir.parhoonco.traccar.core.model.api.Device;
+import ir.parhoonco.traccar.core.model.api.Error;
 import ir.parhoonco.traccar.core.model.api.Verify;
 import ir.parhoonco.traccar.ui.FragmentHelper;
 import ir.parhoonco.traccar.ui.component.Timer;
 import ir.parhoonco.traccar.ui.dialog.ErrorDialog;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Converter;
 import retrofit2.Response;
 
 /**
@@ -258,6 +264,17 @@ public class VerificationFragment extends Fragment implements Callback<Verify> {
 
             editText0.requestFocus();
 
+            ErrorDialog dialog = new ErrorDialog();
+
+            Converter<ResponseBody, Error> errorConverter =
+                    ApplicationLoader.retrofit.responseBodyConverter(Error.class, new Annotation[0]);
+            try {
+                Error error = errorConverter.convert(response.errorBody());
+                dialog.showDialogMessage(getActivity(), error.getMessage());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             submitBtn.setText("ارسال");
             submitBtn.setEnabled(true);
         } else if (response.code() == 200) {
@@ -277,7 +294,7 @@ public class VerificationFragment extends Fragment implements Callback<Verify> {
     @Override
     public void onFailure(Call<Verify> call, Throwable t) {
         ErrorDialog dialog = new ErrorDialog();
-        dialog.showDialog(getActivity(), R.string.internet_problem);
+        dialog.showDialog(getActivity(), R.string.check_internet);
 
         submitBtn.setText("ارسال");
         submitBtn.setEnabled(true);

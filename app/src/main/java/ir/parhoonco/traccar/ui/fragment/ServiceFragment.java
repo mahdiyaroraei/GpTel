@@ -221,19 +221,12 @@ public class ServiceFragment extends Fragment implements Callback<List<Pm>> {
                         saveCall.enqueue(new Callback<Empty>() {
                             @Override
                             public void onResponse(Call<Empty> call, Response<Empty> response) {
-                                if (response.code() == 400) {
-                                    ErrorDialog dialog = new ErrorDialog();
-                                    dialog.showDialog((Activity) getContext(), R.string.error_happen);
-                                } else if (response.code() == 204) {
+                                if (response.code() == 204) {
                                     final Call<List<PmConfig>> listCall = ApplicationLoader.api.getPmConfig(CarFragment.defaultImei);
                                     listCall.enqueue(new Callback<List<PmConfig>>() {
                                         @Override
                                         public void onResponse(Call<List<PmConfig>> call, Response<List<PmConfig>> response) {
-                                            if (response.code() == 400) {
-                                                ErrorDialog dialog = new ErrorDialog();
-                                                dialog.showDialog(getActivity(), R.string.error_happen);
-
-                                            } else if (response.code() == 200) {
+                                            if (response.code() == 200) {
                                                 showConfigPms(response.body(), true);
                                             }
                                         }
@@ -381,11 +374,7 @@ public class ServiceFragment extends Fragment implements Callback<List<Pm>> {
                 call.enqueue(new Callback<List<PmConfig>>() {
                     @Override
                     public void onResponse(Call<List<PmConfig>> call, Response<List<PmConfig>> response) {
-                        if (response.code() == 400) {
-                            ErrorDialog dialog = new ErrorDialog();
-                            dialog.showDialog(getActivity(), R.string.error_happen);
-
-                        } else if (response.code() == 200) {
+                        if (response.code() == 200) {
                             showConfigPms(response.body(), true);
                         }
                     }

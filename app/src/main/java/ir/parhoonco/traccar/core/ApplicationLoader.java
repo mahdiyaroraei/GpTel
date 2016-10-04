@@ -54,7 +54,7 @@ public class ApplicationLoader {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
-        api = ServiceGenerator.createService(TraccarAPI.class, "admin", "admin");
+        api = ServiceGenerator.createService(TraccarAPI.class, "admin", "admin" , context);
 
         /*//Initializing our broadcast receiver
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {

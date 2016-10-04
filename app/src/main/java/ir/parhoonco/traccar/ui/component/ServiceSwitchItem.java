@@ -85,10 +85,7 @@ public class ServiceSwitchItem extends LinearLayout {
                 saveCall.enqueue(new Callback<Empty>() {
                     @Override
                     public void onResponse(Call<Empty> call, Response<Empty> response) {
-                        if (response.code() == 400) {
-                            ErrorDialog dialog = new ErrorDialog();
-                            dialog.showDialog((Activity) getContext(), R.string.error_happen);
-                        } else if (response.code() == 204) {
+                        if (response.code() == 204) {
                             SuccessDialog dialog = new SuccessDialog();
                             dialog.showDialog((Activity) getContext(), "با موفقیت ذخیره شد.");
                         }

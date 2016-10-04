@@ -60,13 +60,10 @@ public class TicketFragment extends Fragment {
                         ticketCreateCall.enqueue(new Callback<TicketCreate>() {
                             @Override
                             public void onResponse(Call<TicketCreate> call, Response<TicketCreate> response) {
-                                if (response.code() == 400){
-                                    ErrorDialog dialog = new ErrorDialog();
-                                    dialog.showDialog(getActivity(), R.string.error_happen);
-                                }else if (response.code() == 200){
+                                if (response.code() == 200) {
                                     Fragment chatFragment = new ChatFragment();
                                     Bundle bundle = new Bundle();
-                                    bundle.putInt("ticket_id" , response.body().getTicketid());
+                                    bundle.putInt("ticket_id", response.body().getTicketid());
                                     chatFragment.setArguments(bundle);
                                     FragmentHelper.getInstance(getContext()).addToStack(chatFragment);
                                 }
@@ -75,7 +72,7 @@ public class TicketFragment extends Fragment {
                             @Override
                             public void onFailure(Call<TicketCreate> call, Throwable t) {
                                 ErrorDialog dialog = new ErrorDialog();
-                                dialog.showDialog(getActivity(), R.string.error_happen);
+                                dialog.showDialog(getActivity(), R.string.check_internet);
                             }
                         });
                     }
@@ -88,10 +85,7 @@ public class TicketFragment extends Fragment {
             @Override
             public void onResponse(Call<Tickets> call, Response<Tickets> response) {
 
-                if (response.code() == 400) {
-                    ErrorDialog dialog = new ErrorDialog();
-                    dialog.showDialog(getActivity(), R.string.error_happen);
-                } else if (response.code() == 200) {
+                if (response.code() == 200) {
                     TicketAdapter adapter = new TicketAdapter(response.body().getTickets(), getContext());
                     ticketList.setAdapter(adapter);
                     saveTicketsToDb(response.body().getTickets());
@@ -102,8 +96,9 @@ public class TicketFragment extends Fragment {
                 for (Ticket ticket :
                         tickets) {
                     try {
-                        ticket.setId(Ticket.find(Ticket.class , "ticketid = ?" , String.valueOf(ticket.getTicketid())).get(0).getId());
-                    }catch (IndexOutOfBoundsException e){}
+                        ticket.setId(Ticket.find(Ticket.class, "ticketid = ?", String.valueOf(ticket.getTicketid())).get(0).getId());
+                    } catch (IndexOutOfBoundsException e) {
+                    }
                     ticket.save();
                 }
             }

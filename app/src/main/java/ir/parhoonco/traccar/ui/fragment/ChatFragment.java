@@ -57,10 +57,7 @@ public class ChatFragment extends Fragment {
         messagesCall.enqueue(new Callback<Messages>() {
             @Override
             public void onResponse(Call<Messages> call, Response<Messages> response) {
-                if (response.code() == 400) {
-                    ErrorDialog dialog = new ErrorDialog();
-                    dialog.showDialog(getActivity(), R.string.error_happen);
-                } else if (response.code() == 200) {
+                if (response.code() == 200) {
                     messages = response.body().getMessages();
                     chats.setAdapter(adapter);
                     for (int i = response.body().getMessages().size() - 1; i >= 0; i--) {
@@ -87,10 +84,7 @@ public class ChatFragment extends Fragment {
                 messageCreateCall.enqueue(new Callback<MessageCreate>() {
                     @Override
                     public void onResponse(Call<MessageCreate> call, Response<MessageCreate> response) {
-                        if (response.code() == 400) {
-                            ErrorDialog dialog = new ErrorDialog();
-                            dialog.showDialog(getActivity(), R.string.error_happen);
-                        } else if (response.code() == 200) {
+                        if (response.code() == 200) {
                             messageInput.setText("");
                             Message message = new Message();
                             message.setBody(msgBody);
@@ -109,7 +103,7 @@ public class ChatFragment extends Fragment {
                     @Override
                     public void onFailure(Call<MessageCreate> call, Throwable t) {
                         ErrorDialog dialog = new ErrorDialog();
-                        dialog.showDialog(getActivity(), R.string.error_happen);
+                        dialog.showDialog(getActivity(), R.string.check_internet);
                     }
                 });
             }

@@ -29,7 +29,6 @@
     <string name="antifreeze">تعویض ضد یخ</string>
     <string name="service_base_time">زمان (روز)</string>
     <string name="service_base_distance">مسافت (Km)</string>
-    <string name="error_happen">مشکلی پیش آمده است</string>
     <string name="internet_problem">به اینترنت متصل شوید</string>
     <string name="sms_verify_guide">برای ورود شماره ی همراه خود را وارد نمایید</string>
     <string name="welcome">به سامانه هوشمند رهیابی خودرو خوش آمدید.</string>
@@ -64,6 +63,24 @@
 
     <string name="theft">theft</string>
     <!--Errors-->
-    <string name="invalid_user_id_error">شماره تلفن شما در سامانه وجود ندارد.</string>
+    <string name="invalid_userid">شماره وارد شده معتبر نیست.</string>
+    <string name="sms_send_error">خطا در ارسال کد تایید لطفا بعدا تلاش کنید.</string>
+    <string name="invalid_vercode">کد تایید نامعتبر است.</string>
+    <string name="vercode_expire">کد تایید منقضی شده است.</string>
+    <string name="user_blocked">حساب کاربری مسدود است.</string>
+    <string name="user_orphan">کاربر عضو هیچ گروهی نیست.</string>
+    <string name="already_exist">کاربر در حال حاضر عضو گروه است.</string>
+    <string name="device_blocked">دستگاه مسدود شده است.</string>
+    <string name="access_denied">شما حق دسترسی به دستگاه را ندارید.</string>
+    <string name="invalid_position">مکان مورد نظر در پایگاه داده موجود نیست.</string>
+    <string name="imei_exist">این دستگاه قبلا اضافه شده است.</string>
+    <string name="invalid_model">مقدار مدل معتبر نیست.</string>
+    <string name="group_not_empty">گروه دستگاه دارای عضو است.</string>
+    <string name="invalid_phonenumber">شماره نامعتبر است.</string>
+    <string name="invalid_nationalcode">شماره ملی نامعتبر است.</string>
+    <string name="invalid_receiverid">کاربری برای دریافت پیام شما وجود ندارد.</string>
+    <string name="invalid_ticketid">شناسه تیکت موجود نیست.</string>
+    <string name="invalid_key">کلید وارد شده صحیح نیست.</string>
+    <string name="check_internet">اتصال اینترنت خود را بررسی کنید.</string>
 
 </resources>

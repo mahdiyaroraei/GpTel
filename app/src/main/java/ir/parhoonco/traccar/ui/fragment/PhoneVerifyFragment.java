@@ -14,14 +14,9 @@ import android.widget.LinearLayout;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.util.HashMap;
-import java.util.Map;
 
 import ir.parhoonco.traccar.R;
 import ir.parhoonco.traccar.core.ApplicationLoader;
-import ir.parhoonco.traccar.core.ServiceGenerator;
-import ir.parhoonco.traccar.core.SocketController;
-import ir.parhoonco.traccar.core.TraccarAPI;
 import ir.parhoonco.traccar.core.model.Empty;
 import ir.parhoonco.traccar.core.model.api.Error;
 import ir.parhoonco.traccar.ui.FragmentHelper;
@@ -43,7 +38,7 @@ public class PhoneVerifyFragment extends Fragment implements Callback<Empty> {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ((LaunchActivity)getActivity()).hideTabLayout();
+        ((LaunchActivity) getActivity()).hideTabLayout();
         View fragmentView = inflater.inflate(R.layout.fragment_verify_phone, null);
 
         editText = (EditText) fragmentView.findViewById(R.id.input_phone);
@@ -62,7 +57,7 @@ public class PhoneVerifyFragment extends Fragment implements Callback<Empty> {
             @Override
             public void onClick(View view) {
 
-                String phone = editText.getText().toString().replace("(" , "").replace(")" , "").replace("-","").replace(" ","");
+                String phone = editText.getText().toString().replace("(", "").replace(")", "").replace("-", "").replace(" ", "");
 
                 VerificationFragment.phone = phone;
 
@@ -81,21 +76,7 @@ public class PhoneVerifyFragment extends Fragment implements Callback<Empty> {
     public void onResponse(Call<Empty> call, Response<Empty> response) {
         if (response.code() == 204) {
             FragmentHelper.getInstance(getActivity()).addToStack(new VerificationFragment());
-        }else if(response.code() == 400){
-            ErrorDialog dialog = new ErrorDialog();
-
-            Converter<ResponseBody , Error> errorConverter =
-                    ApplicationLoader.retrofit.responseBodyConverter(Error.class , new Annotation[0]);
-            try {
-                Error error = errorConverter.convert(response.errorBody());
-                if (error.getMessage().equals("INVALID_USERID")){
-                    dialog.showDialog(getActivity() , R.string.invalid_user_id_error);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                dialog.showDialog(getActivity() , R.string.error_happen);
-            }
-
+        } else if (response.code() == 400) {
             submitBtn.setText("ارسال");
             submitBtn.setEnabled(true);
         }
@@ -104,7 +85,7 @@ public class PhoneVerifyFragment extends Fragment implements Callback<Empty> {
     @Override
     public void onFailure(Call<Empty> call, Throwable t) {
         ErrorDialog dialog = new ErrorDialog();
-        dialog.showDialog(getActivity() , R.string.error_happen);
+        dialog.showDialog(getActivity(), R.string.check_internet);
 
         submitBtn.setText("ارسال");
         submitBtn.setEnabled(true);

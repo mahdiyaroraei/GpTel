@@ -35,7 +35,7 @@ public class FragmentHelper {
                 transaction.commit();
                 transaction = fragmentManager.beginTransaction();
             }
-            transaction.replace(R.id.fragmentLayout, fragment);
+            transaction.add(R.id.fragmentLayout, fragment).addToBackStack(null);
             transaction.commit();
             currentFragment = fragment;
         } catch (Exception e) {
