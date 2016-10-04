@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -77,6 +78,30 @@ public class VerificationFragment extends Fragment implements Callback<Verify> {
 
         nextEditText = editText1;
 
+        View.OnKeyListener onKeyListener = new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                if(keyCode == KeyEvent.KEYCODE_DEL) {
+                    if (nextEditText == editText1) {
+                        nextEditText = editText0;
+                        editText4.requestFocus();
+                    } else if (nextEditText == editText2) {
+                        nextEditText = editText1;
+                        editText0.requestFocus();
+                    } else if (nextEditText == editText3) {
+                        nextEditText = editText2;
+                        editText1.requestFocus();
+                    } else if (nextEditText == editText4) {
+                        nextEditText = editText3;
+                        editText2.requestFocus();
+                    } else if (nextEditText == editText0) {
+                        nextEditText = editText4;
+                        editText3.requestFocus();
+                    }
+                }
+                return false;
+            }
+        };
 
         TextWatcher textWatcher = new TextWatcher() {
             @Override
@@ -125,6 +150,12 @@ public class VerificationFragment extends Fragment implements Callback<Verify> {
         editText2.addTextChangedListener(textWatcher);
         editText3.addTextChangedListener(textWatcher);
         editText4.addTextChangedListener(textWatcher);
+
+        editText0.setOnKeyListener(onKeyListener);
+        editText1.setOnKeyListener(onKeyListener);
+        editText2.setOnKeyListener(onKeyListener);
+        editText3.setOnKeyListener(onKeyListener);
+        editText4.setOnKeyListener(onKeyListener);
 
         final LinearLayout edt_layout = (LinearLayout) fragmentView.findViewById(R.id.edt_layout);
 
