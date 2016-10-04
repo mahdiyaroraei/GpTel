@@ -139,10 +139,9 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
 
         this.mapView.setClickable(true);
         this.mapView.getMapScaleBar().setVisible(true);
-        this.mapView.setBuiltInZoomControls(true);
+        this.mapView.setBuiltInZoomControls(false);
         this.mapView.setZoomLevelMin((byte) 10);
         this.mapView.setZoomLevelMax((byte) 20);
-
 
         // create a tile cache of suitable size
         TileCache tileCache = AndroidUtil.createTileCache(getContext(), "mapcache",
