@@ -54,12 +54,11 @@ public class AssignmentFragment extends Fragment {
                                     @Override
                                     public void onClick(View view) {
                                         dialog.dismiss();
-                                        final boolean isCompeleteAssignment = ((AppCompatCheckBox) dialog.findViewById(R.id.delete_group_cbx)).isChecked();
-                                        Call<Empty> masterCall = ApplicationLoader.api.setMaster(CarFragment.defaultImei, user.getPhonenumber(), isCompeleteAssignment);
+                                        Call<Empty> masterCall = ApplicationLoader.api.setMaster(CarFragment.defaultImei, user.getPhonenumber(), true);
                                         masterCall.enqueue(new Callback<Empty>() {
                                             @Override
                                             public void onResponse(Call<Empty> call, Response<Empty> response) {
-                                                if (response.code() == 200) {
+                                                if (response.code() == 204) {
                                                     getContext().startActivity(new Intent(getContext(), LaunchActivity.class));
                                                 }
                                             }

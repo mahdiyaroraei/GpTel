@@ -264,7 +264,7 @@ public class TeltonikaSmsProtocol {
         final Command command = new Command();
         command.setDevice(device);
         command.setStatus("success");
-        command.setTime(System.currentTimeMillis());
+        command.setTime(System.currentTimeMillis() / 1000);
 
         if (message.contains("GPS:")) {
             int s_lat = message.indexOf("Lat:") + 4;
