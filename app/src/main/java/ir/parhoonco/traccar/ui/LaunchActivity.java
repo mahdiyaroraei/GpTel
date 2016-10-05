@@ -1,6 +1,7 @@
 package ir.parhoonco.traccar.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.TransitionDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -8,7 +9,9 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -136,9 +139,11 @@ public class LaunchActivity extends AppCompatActivity {
         if (enableTab != null){
             TransitionDrawable transition = (TransitionDrawable) enableTab.getBackground();
             transition.reverseTransition(200);
+            ((TextView)((ViewGroup)enableTab).getChildAt(1)).setTextColor(Color.parseColor("#5dff04"));
         }
         TransitionDrawable transition = (TransitionDrawable) v.getBackground();
         transition.startTransition(200);
+        ((TextView)((ViewGroup)v).getChildAt(1)).setTextColor(Color.WHITE);
 //        v.setBackgroundResource(R.drawable.tab_selected_bg);
         if (v.getId() == R.id.carTab) {
             FragmentHelper.getInstance(this).addToStack(new CarFragment());
@@ -158,10 +163,12 @@ public class LaunchActivity extends AppCompatActivity {
         if (enableTab != null){
             TransitionDrawable transition = (TransitionDrawable) enableTab.getBackground();
             transition.reverseTransition(200);
+            ((TextView)((ViewGroup)enableTab).getChildAt(1)).setTextColor(Color.parseColor("#5dff04"));
         }
 
         TransitionDrawable transition = (TransitionDrawable) v.getBackground();
         transition.startTransition(200);
+        ((TextView)((ViewGroup)v).getChildAt(1)).setTextColor(Color.WHITE);
 
         enableTab = v;
     }

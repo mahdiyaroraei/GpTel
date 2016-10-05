@@ -61,7 +61,6 @@ public class CarFragment extends Fragment {
     private TextView tempratureTextView;
     private TextView batteryTextView;
     private TextView lastupdateTextView;
-    private TextView imeiTextView;
     private TextView deviceNameTextView;
     private DrawView drawView;
 
@@ -97,7 +96,6 @@ public class CarFragment extends Fragment {
 */
         initViews(view);
 
-        imeiTextView.setText(defaultImei);
         ((LaunchActivity) getActivity()).showTabLayout();
 
         if (defaultDevice != null) {
@@ -213,8 +211,7 @@ public class CarFragment extends Fragment {
     private void showDeviceInfo(DeviceInfo deviceInfo) {
         PersianCalendar calendar = new PersianCalendar(deviceInfo.getLastupdate() * 1000);
         calendar.setTimeZone(TimeZone.getDefault());
-        lastupdateTextView.setText(calendar.getPersianShortDateTime());
-
+        lastupdateTextView.setText(calendar.getPersianShortDateTime() + " آخرین بروزرسانی ");
         Typeface typeface = Typeface.createFromAsset(lastupdateTextView.getContext().getAssets(), "fonts/Jersey.ttf");
         tempratureTextView.setTypeface(typeface);
         batteryTextView.setTypeface(typeface);
@@ -274,7 +271,6 @@ public class CarFragment extends Fragment {
         tempratureTextView = (TextView) view.findViewById(R.id.tempratureTextView);
         batteryTextView = (TextView) view.findViewById(R.id.batteryTextView);
         lastupdateTextView = (TextView) view.findViewById(R.id.time_txt);
-        imeiTextView = (TextView) view.findViewById(R.id.imei_txt);
         deviceNameTextView = (TextView) view.findViewById(R.id.device_name);
         drawView = (DrawView) view.findViewById(R.id.battery_fill);
     }
