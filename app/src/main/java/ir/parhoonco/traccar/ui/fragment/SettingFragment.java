@@ -1,5 +1,6 @@
 package ir.parhoonco.traccar.ui.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,8 @@ import android.support.v7.app.AppCompatDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import ir.parhoonco.traccar.R;
 import ir.parhoonco.traccar.core.SharedPreferenceHelper;
@@ -21,8 +24,11 @@ public class SettingFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ((LaunchActivity) getActivity()).onTabClicked(R.id.settingsTab);
-
         View view = inflater.inflate(R.layout.fragment_settings, null);
+
+        if (!CarFragment.isMaster) {
+            ((TextView) view.findViewById(R.id.assignment_txt)).setTextColor(Color.parseColor("#898989"));
+        }
 
         view.findViewById(R.id.paymentFragment).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +75,11 @@ public class SettingFragment extends Fragment {
         view.findViewById(R.id.assignmentFragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentHelper.getInstance(getContext()).addToStack(new AssignmentFragment());
+                if (CarFragment.isMaster) {
+                    FragmentHelper.getInstance(getContext()).addToStack(new AssignmentFragment());
+                } else {
+                    Toast.makeText(getContext(), "برای دسترسی به این قسمت باید سرگروه باشید.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

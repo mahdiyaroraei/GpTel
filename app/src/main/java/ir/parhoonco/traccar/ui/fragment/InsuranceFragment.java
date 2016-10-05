@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ir.parhoonco.traccar.R;
 import ir.parhoonco.traccar.core.ApplicationLoader;
@@ -74,39 +75,43 @@ public class InsuranceFragment extends Fragment {
         addLayout.findViewById(R.id.save_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean validate = true;
-                String firstname = ((EditText) addLayout.findViewById(R.id.first_name_edt)).getText().toString();
-                String lastname = ((EditText) addLayout.findViewById(R.id.last_name_edt)).getText().toString();
-                String nationalcode = ((EditText) addLayout.findViewById(R.id.national_code_edt)).getText().toString();
-                String address = ((EditText) addLayout.findViewById(R.id.address_edt)).getText().toString();
-                if (firstname.equals("")) {
-                    validate = false;
-                } else if (lastname.equals("")) {
-                    validate = false;
-                } else if (nationalcode.equals("")) {
-                    validate = false;
-                } else if (address.equals("")) {
-                    validate = false;
-                }
+                if (CarFragment.isMaster) {
+                    boolean validate = true;
+                    String firstname = ((EditText) addLayout.findViewById(R.id.first_name_edt)).getText().toString();
+                    String lastname = ((EditText) addLayout.findViewById(R.id.last_name_edt)).getText().toString();
+                    String nationalcode = ((EditText) addLayout.findViewById(R.id.national_code_edt)).getText().toString();
+                    String address = ((EditText) addLayout.findViewById(R.id.address_edt)).getText().toString();
+                    if (firstname.equals("")) {
+                        validate = false;
+                    } else if (lastname.equals("")) {
+                        validate = false;
+                    } else if (nationalcode.equals("")) {
+                        validate = false;
+                    } else if (address.equals("")) {
+                        validate = false;
+                    }
 
-                if (validate) {
-                    Call<Empty> call = ApplicationLoader.api.addInsurance(CarFragment.defaultImei, firstname, lastname, nationalcode, address);
-                    call.enqueue(new Callback<Empty>() {
-                        @Override
-                        public void onResponse(Call<Empty> call, Response<Empty> response) {
-                            if (response.code() == 204) {
-                                insuranceCall.enqueue(callback);
+                    if (validate) {
+                        Call<Empty> call = ApplicationLoader.api.addInsurance(CarFragment.defaultImei, firstname, lastname, nationalcode, address);
+                        call.enqueue(new Callback<Empty>() {
+                            @Override
+                            public void onResponse(Call<Empty> call, Response<Empty> response) {
+                                if (response.code() == 204) {
+                                    insuranceCall.enqueue(callback);
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<Empty> call, Throwable t) {
+                            @Override
+                            public void onFailure(Call<Empty> call, Throwable t) {
 
-                        }
-                    });
+                            }
+                        });
+                    } else {
+                        ErrorDialog dialog = new ErrorDialog();
+                        dialog.showDialog(getActivity(), "لطفا تمام فیلد هارا پر کنید.");
+                    }
                 } else {
-                    ErrorDialog dialog = new ErrorDialog();
-                    dialog.showDialog(getActivity(), "لطفا تمام فیلد هارا پر کنید.");
+                    Toast.makeText(getContext(), "برای دسترسی به این قسمت باید سرگروه باشید.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

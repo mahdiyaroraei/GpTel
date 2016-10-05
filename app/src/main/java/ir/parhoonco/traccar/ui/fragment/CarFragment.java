@@ -50,6 +50,7 @@ public class CarFragment extends Fragment {
     public static List<Device> devices = null;
     public static String defaultImei = null;
     public static Device defaultDevice;
+    public static boolean isMaster = false;
     private static int power_state = -1;
     private boolean protection = false;
     private ViewGroup view;
@@ -102,6 +103,7 @@ public class CarFragment extends Fragment {
             deviceNameTextView.setText(defaultDevice.getName());
         }
         showDeviceInfo(defaultDevice.getDeviceInfo());
+        isMaster = defaultDevice.getDeviceInfo().ismaster();
         Call<DeviceInfo> deviceInfoCall = ApplicationLoader.api.getDeviceInfo(defaultImei);
         deviceInfoCall.enqueue(new Callback<DeviceInfo>() {
             @Override
@@ -109,6 +111,7 @@ public class CarFragment extends Fragment {
                 if (response.code() == 200) {
                     response.body().save();
                     defaultDevice.setDeviceInfo(response.body());
+                    isMaster = response.body().ismaster();
                     defaultDevice.save();
 
                     showDeviceInfo(response.body());
