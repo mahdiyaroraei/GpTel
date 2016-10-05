@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -108,6 +109,8 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
     private ArrayList<Layer> markers = new ArrayList<>();
     private ThinDownloadManager downloadManager;
     private AndroidMarker.OnMarkerTap onMarkerTapInstance;
+    private View enableTab;
+    private TextView distanceTextView;
 
     @Override
     public void onAttach(Context context) {
@@ -237,7 +240,18 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
             this.mapView.setZoomLevel((byte) 15);
             view.findViewById(R.id.power).setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
+                public void onClick(View v) {
+                    if (enableTab != null) {
+                        TransitionDrawable transition = (TransitionDrawable) enableTab.getBackground();
+                        transition.reverseTransition(200);
+                        ((TextView) ((ViewGroup) enableTab).getChildAt(1)).setTextColor(Color.parseColor("#5dff04"));
+                    }
+                    TransitionDrawable transition = (TransitionDrawable) v.getBackground();
+                    transition.startTransition(200);
+                    ((TextView) ((ViewGroup) v).getChildAt(1)).setTextColor(Color.WHITE);
+
+                    enableTab = v;
+
                     removeMarkers();
                     addMarker(devicePosition, other_pin_drawable);
                     mapView.setCenter(new LatLong(devicePosition.getLat(), devicePosition.getLon()));
@@ -309,6 +323,18 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
         view.findViewById(R.id.mapHistoryTab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (enableTab != null) {
+                    TransitionDrawable transition = (TransitionDrawable) enableTab.getBackground();
+                    transition.reverseTransition(200);
+                    ((TextView) ((ViewGroup) enableTab).getChildAt(1)).setTextColor(Color.parseColor("#5dff04"));
+                }
+                TransitionDrawable transition = (TransitionDrawable) v.getBackground();
+                transition.startTransition(200);
+                ((TextView) ((ViewGroup) v).getChildAt(1)).setTextColor(Color.WHITE);
+
+                enableTab = v;
+
                 removeMarkers();
                 if (isPopupShow == false) {
                     isPopupShow = true;
@@ -380,6 +406,17 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
         view.findViewById(R.id.distanceTab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (enableTab != null) {
+                    TransitionDrawable transition = (TransitionDrawable) enableTab.getBackground();
+                    transition.reverseTransition(200);
+                    ((TextView) ((ViewGroup) enableTab).getChildAt(1)).setTextColor(Color.parseColor("#5dff04"));
+                }
+                TransitionDrawable transition = (TransitionDrawable) v.getBackground();
+                transition.startTransition(200);
+                ((TextView) ((ViewGroup) v).getChildAt(1)).setTextColor(Color.WHITE);
+
+                enableTab = v;
+
                 removeMarkers();
                 dialog = new SuccessDialog();
                 dialog.showDialog(getActivity(), "لطفا تا دریافت موقعیت مکانی گوشی منتظر بمانید...");
@@ -389,13 +426,14 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
                     public void onUpdate(Location location) {
                         try {
                             dialog.dimmisDialog();
-                            TextView distanceTextView = new TextView(getContext(), null);
-                            distanceTextView.setTextColor(Color.GREEN);
-                            distanceTextView.setBackgroundResource(R.drawable.bg_shadow);
+                            distanceTextView = new TextView(getContext(), null);
+                            distanceTextView.setTextColor(Color.WHITE);
+                            distanceTextView.setBackgroundColor(Color.parseColor("#4b862d"));
+                            distanceTextView.setPadding(10,10,10,10);
                             float dist = showDistance(location);
                             if (dist != 0.0) {
-                                distanceTextView.setText(dist + "متر");
-                                ((LinearLayout) view).addView(distanceTextView);
+                                distanceTextView.setText(dist + " متر ");
+                                ((RelativeLayout) view.findViewById(R.id.mapLayout)).addView(distanceTextView);
                             }
                         } catch (Exception e) {
                         }
@@ -458,7 +496,7 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
                                         try {
                                             for (LatLong latLong :
                                                     divide(new LatLong(latLongs.get(counter).getLat(), latLongs.get(counter).getLon())
-                                                            , new LatLong(latLongs.get(counter + 1).getLat(), latLongs.get(counter + 1).getLon()), 6)) {
+                                                            , new LatLong(latLongs.get(counter + 1).getLat(), latLongs.get(counter + 1).getLon()), 2)) {
                                                 marker.setLatLong(latLong);
                                                 rotateMarker(marker, angleFromCoordinate(latLongs.get(counter).getLat(), latLongs.get(counter).getLon(),
                                                         latLongs.get(counter + 1).getLat(), latLongs.get(counter + 1).getLon()));
@@ -744,6 +782,17 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
         for (Layer layer :
                 markers) {
             this.mapView.getLayerManager().getLayers().remove(layer);
+        }
+        if (isPopupShow) {
+            try {
+                ((ViewGroup) popupLayout.getParent()).removeView(popupLayout);
+            } catch (Exception e) {
+            }
+        }
+        if (distanceTextView != null){
+            try{
+                ((ViewGroup)distanceTextView.getParent()).removeView(distanceTextView);
+            }catch (Exception e){}
         }
 
         markers = new ArrayList<>();
