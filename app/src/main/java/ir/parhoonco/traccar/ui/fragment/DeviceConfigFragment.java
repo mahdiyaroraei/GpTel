@@ -58,8 +58,8 @@ public class DeviceConfigFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View fragmentView = inflater.inflate(R.layout.fragment_device_config, null);
+    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final View fragmentView = inflater.inflate(R.layout.fragment_device_config, null);
 
         bindViews(fragmentView);
 
@@ -84,100 +84,120 @@ public class DeviceConfigFragment extends Fragment {
         fragmentView.findViewById(R.id.save_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final DeviceConfig config = initDeviceConfig();
-                if (config == null) {
-                    return;
-                }
-                DeviceConfig carDeviceConfig = CarFragment.defaultDevice.getDeviceConfig();
-
-                if (carDeviceConfig == null) {
-                    carDeviceConfig = new DeviceConfig();
-                    carDeviceConfig.save();
-                    CarFragment.defaultDevice.setDeviceConfig(carDeviceConfig);
-                    CarFragment.defaultDevice.save();
-                }
-
-                if (carDeviceConfig == null || !(config.isProtectionmode() == carDeviceConfig.isProtectionmode())) {
-                    DeviceConfig device_config = CarFragment.defaultDevice.getDeviceConfig();
-                    device_config.setProtectionmode(protectionCheckBox.isChecked());
-                    device_config.save();
-                }
-                if (carDeviceConfig == null || !(config.isAutogeofence() == carDeviceConfig.isAutogeofence())) {
-                    try {
-                        TeltonikaSmsProtocol.sendCommand(CarFragment.defaultDevice, TeltonikaSmsProtocol.TYPE_SETAUTOGEOFENCE, geoFenceCheckBox.isChecked() ? "1" : "0", getContext());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (carDeviceConfig == null || !(config.isAutooff() == carDeviceConfig.isAutooff())) {
-                    DeviceConfig device_config = CarFragment.defaultDevice.getDeviceConfig();
-                    device_config.setAutooff(autoOffCheckBox.isChecked());
-                    device_config.save();
-                }
-                if (carDeviceConfig == null || !(config.getMaxspeed() == carDeviceConfig.getMaxspeed())) {
-                    try {
-                        TeltonikaSmsProtocol.sendCommand(CarFragment.defaultDevice, TeltonikaSmsProtocol.TYPE_SETMAXSPEED, maxSpeedEditText.getText().toString(), getContext());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                int min_per = 50;
-                int min_dis = 5000;
-                int angle = 50;
-                int send_per = 10;
-
-                switch (dataSendSpinner.getSelectedItemPosition()) {
-                    case 0:
-                        min_per = 10;
-                        min_dis = 3000;
-                        angle = 30;
-                        break;
-                    case 1:
-                        min_per = 180;
-                        min_dis = 3000;
-                        angle = 30;
-                        break;
-                    case 2:
-                        min_per = 600;
-                        min_dis = 6000;
-                        angle = 60;
-                        break;
-                }
-
-                try {
-                    TeltonikaSmsProtocol.sendCommand(CarFragment.defaultDevice, TeltonikaSmsProtocol.TYPE_SETMINPERIOD, String.valueOf(min_per), getContext());
-                    TeltonikaSmsProtocol.sendCommand(CarFragment.defaultDevice, TeltonikaSmsProtocol.TYPE_SETMINANGLE, String.valueOf(angle), getContext());
-                    TeltonikaSmsProtocol.sendCommand(CarFragment.defaultDevice, TeltonikaSmsProtocol.TYPE_SETMINDISTANCE, String.valueOf(min_dis), getContext());
-                    TeltonikaSmsProtocol.sendCommand(CarFragment.defaultDevice, TeltonikaSmsProtocol.TYPE_SETSENDPERIOD, String.valueOf(send_per), getContext());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                Call<Empty> call = ApplicationLoader.api.setDeviceConfig(config.getImei(), config.isProtectionmode(), config.isAutooff(),
-                        Double.parseDouble(config.getMinvoltage()), config.getMaxspeed(), config.isAutogeofence(), config.getMinangle(), config.getMinperiod()
-                        , config.getSendperiod(), config.getMindistance());
-                call.enqueue(new Callback<Empty>() {
+                final AppCompatDialog dialog = new AppCompatDialog(getContext());
+                dialog.setCancelable(true);
+                dialog.setContentView(inflater.inflate(R.layout.dialog_send_sms, null));
+                dialog.findViewById(R.id.yes_btn).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onResponse(Call<Empty> call, Response<Empty> response) {
-                        if (response.code() == 204) {
-                            config.save();
-                        } else {
-                            config.setStatus("success_local");
-                            config.save();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Empty> call, Throwable t) {
-                        config.setStatus("success_local");
-                        config.save();
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                        setConfigs();
                     }
                 });
+                dialog.findViewById(R.id.no_btn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
         });
 
         return fragmentView;
+    }
+
+    private void setConfigs() {
+        final DeviceConfig config = initDeviceConfig();
+        if (config == null) {
+            return;
+        }
+        DeviceConfig carDeviceConfig = CarFragment.defaultDevice.getDeviceConfig();
+
+        if (carDeviceConfig == null) {
+            carDeviceConfig = new DeviceConfig();
+            carDeviceConfig.save();
+            CarFragment.defaultDevice.setDeviceConfig(carDeviceConfig);
+            CarFragment.defaultDevice.save();
+        }
+
+        if (carDeviceConfig == null || !(config.isProtectionmode() == carDeviceConfig.isProtectionmode())) {
+            DeviceConfig device_config = CarFragment.defaultDevice.getDeviceConfig();
+            device_config.setProtectionmode(protectionCheckBox.isChecked());
+            device_config.save();
+        }
+        if (carDeviceConfig == null || !(config.isAutogeofence() == carDeviceConfig.isAutogeofence())) {
+            try {
+                TeltonikaSmsProtocol.sendCommand(CarFragment.defaultDevice, TeltonikaSmsProtocol.TYPE_SETAUTOGEOFENCE, geoFenceCheckBox.isChecked() ? "1" : "0", getContext());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (carDeviceConfig == null || !(config.isAutooff() == carDeviceConfig.isAutooff())) {
+            DeviceConfig device_config = CarFragment.defaultDevice.getDeviceConfig();
+            device_config.setAutooff(autoOffCheckBox.isChecked());
+            device_config.save();
+        }
+        if (carDeviceConfig == null || !(config.getMaxspeed() == carDeviceConfig.getMaxspeed())) {
+            try {
+                TeltonikaSmsProtocol.sendCommand(CarFragment.defaultDevice, TeltonikaSmsProtocol.TYPE_SETMAXSPEED, maxSpeedEditText.getText().toString(), getContext());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        int min_per = 50;
+        int min_dis = 5000;
+        int angle = 50;
+        int send_per = 10;
+
+        switch (dataSendSpinner.getSelectedItemPosition()) {
+            case 0:
+                min_per = 10;
+                min_dis = 3000;
+                angle = 30;
+                break;
+            case 1:
+                min_per = 180;
+                min_dis = 3000;
+                angle = 30;
+                break;
+            case 2:
+                min_per = 600;
+                min_dis = 6000;
+                angle = 60;
+                break;
+        }
+
+        try {
+            TeltonikaSmsProtocol.sendCommand(CarFragment.defaultDevice, TeltonikaSmsProtocol.TYPE_SETMINPERIOD, String.valueOf(min_per), getContext());
+            TeltonikaSmsProtocol.sendCommand(CarFragment.defaultDevice, TeltonikaSmsProtocol.TYPE_SETMINANGLE, String.valueOf(angle), getContext());
+            TeltonikaSmsProtocol.sendCommand(CarFragment.defaultDevice, TeltonikaSmsProtocol.TYPE_SETMINDISTANCE, String.valueOf(min_dis), getContext());
+            TeltonikaSmsProtocol.sendCommand(CarFragment.defaultDevice, TeltonikaSmsProtocol.TYPE_SETSENDPERIOD, String.valueOf(send_per), getContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Call<Empty> call = ApplicationLoader.api.setDeviceConfig(config.getImei(), config.isProtectionmode(), config.isAutooff(),
+                Double.parseDouble(config.getMinvoltage()), config.getMaxspeed(), config.isAutogeofence(), config.getMinangle(), config.getMinperiod()
+                , config.getSendperiod(), config.getMindistance());
+        call.enqueue(new Callback<Empty>() {
+            @Override
+            public void onResponse(Call<Empty> call, Response<Empty> response) {
+                if (response.code() == 204) {
+                    config.save();
+                } else {
+                    config.setStatus("success_local");
+                    config.save();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Empty> call, Throwable t) {
+                config.setStatus("success_local");
+                config.save();
+            }
+        });
     }
 
     private void bindViews(View fragmentView) {

@@ -1,11 +1,14 @@
 package ir.parhoonco.traccar.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatDialog;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,7 +83,7 @@ public class CarFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = (ViewGroup) inflater.inflate(R.layout.fragment_car, null);
 
         /*Display display = getActivity().getWindowManager().getDefaultDisplay();
@@ -122,54 +125,86 @@ public class CarFragment extends Fragment {
         view.findViewById(R.id.powerImageView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (defaultDevice.getDeviceInfo().getEnginstatus() == 1) {
-                    try {
-                        TeltonikaSmsProtocol.sendCommand(defaultDevice, TeltonikaSmsProtocol.TYPE_POWEROFF, null, getContext());
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                final AppCompatDialog dialog = new AppCompatDialog(getContext());
+                dialog.setCancelable(true);
+                dialog.setContentView(inflater.inflate(R.layout.dialog_send_sms, null));
+                dialog.findViewById(R.id.yes_btn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                        if (defaultDevice.getDeviceInfo().getEnginstatus() == 1) {
+                            try {
+                                TeltonikaSmsProtocol.sendCommand(defaultDevice, TeltonikaSmsProtocol.TYPE_POWEROFF, null, getContext());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            try {
+                                TeltonikaSmsProtocol.sendCommand(defaultDevice, TeltonikaSmsProtocol.TYPE_POWERON, null, getContext());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
-                } else {
-                    try {
-                        TeltonikaSmsProtocol.sendCommand(defaultDevice, TeltonikaSmsProtocol.TYPE_POWERON, null, getContext());
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                });
+                dialog.findViewById(R.id.no_btn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
                     }
-                }
+                });
+                dialog.show();
             }
         });
         // Protection mode only for server
         view.findViewById(R.id.protectionImageView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Must be get device config from server in this fragment
-                final DeviceConfig config = CarFragment.defaultDevice.getDeviceConfig();
-                if (config != null) {
-                    if (protection) {
-                        config.setProtectionmode(false);
-                    } else {
-                        config.setProtectionmode(true);
-                    }
-                    config.save();
-                    Call<Empty> protectionCall = ApplicationLoader.api.setDeviceConfig(config.getImei(), config.isProtectionmode(), config.isAutooff(),
-                            Double.parseDouble(config.getMinvoltage()), config.getMaxspeed(), config.isAutogeofence(), config.getMinangle(), config.getMinperiod()
-                            , config.getSendperiod(), config.getMindistance());
-                    protectionCall.enqueue(new Callback<Empty>() {
-                        @Override
-                        public void onResponse(Call<Empty> call, Response<Empty> response) {
-                            if (response.code() == 204) {
+                final AppCompatDialog dialog = new AppCompatDialog(getContext());
+                dialog.setCancelable(true);
+                dialog.setContentView(inflater.inflate(R.layout.dialog_send_sms, null));
+                dialog.findViewById(R.id.yes_btn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                        // Must be get device config from server in this fragment
+                        final DeviceConfig config = CarFragment.defaultDevice.getDeviceConfig();
+                        if (config != null) {
+                            if (protection) {
+                                config.setProtectionmode(false);
                             } else {
-                                config.setStatus("success_local");
-                                config.save();
+                                config.setProtectionmode(true);
                             }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Empty> call, Throwable t) {
-                            config.setStatus("success_local");
                             config.save();
+                            Call<Empty> protectionCall = ApplicationLoader.api.setDeviceConfig(config.getImei(), config.isProtectionmode(), config.isAutooff(),
+                                    Double.parseDouble(config.getMinvoltage()), config.getMaxspeed(), config.isAutogeofence(), config.getMinangle(), config.getMinperiod()
+                                    , config.getSendperiod(), config.getMindistance());
+                            protectionCall.enqueue(new Callback<Empty>() {
+                                @Override
+                                public void onResponse(Call<Empty> call, Response<Empty> response) {
+                                    if (response.code() == 204) {
+                                    } else {
+                                        config.setStatus("success_local");
+                                        config.save();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Empty> call, Throwable t) {
+                                    config.setStatus("success_local");
+                                    config.save();
+                                }
+                            });
                         }
-                    });
-                }
+                    }
+                });
+                dialog.findViewById(R.id.no_btn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
         });
         return view;
