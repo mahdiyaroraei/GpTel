@@ -162,7 +162,7 @@ public class CarFragment extends Fragment {
             public void onClick(View view) {
                 final AppCompatDialog dialog = new AppCompatDialog(getContext());
                 dialog.setCancelable(true);
-                dialog.setContentView(inflater.inflate(R.layout.dialog_send_sms, null));
+                dialog.setContentView(inflater.inflate(R.layout.dialog_protection, null));
                 dialog.findViewById(R.id.yes_btn).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
