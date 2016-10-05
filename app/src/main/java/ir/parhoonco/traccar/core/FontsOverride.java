@@ -51,6 +51,6 @@ public final class FontsOverride {
     }
 
     private static boolean isVersionGreaterOrEqualToLollipop() {
-        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP );
+        return (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP );
     }
 }
