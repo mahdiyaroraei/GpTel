@@ -63,7 +63,7 @@
                 android:background="@android:color/transparent"
                 android:gravity="left"
                 android:hint="@string/hint_phone"
-                android:inputType="phone"
+                android:inputType="number"
                 android:maxLength="14"
                 android:singleLine="true"
                 android:textColor="#FFF"

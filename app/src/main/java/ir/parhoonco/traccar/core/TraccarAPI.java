@@ -20,6 +20,7 @@ import ir.parhoonco.traccar.core.model.api.TicketCreate;
 import ir.parhoonco.traccar.core.model.api.Tickets;
 import ir.parhoonco.traccar.core.model.api.PmConfig;
 import ir.parhoonco.traccar.core.model.api.Position;
+import ir.parhoonco.traccar.core.model.api.User;
 import ir.parhoonco.traccar.core.model.api.Verify;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -80,8 +81,8 @@ public interface TraccarAPI {
                                 @Query("minangle") String minangle , @Query("minperiod") String minperiod , @Query("sendperiod") String sendperiod,
                                 @Query("mindistance") String min_dist);
 
-    @GET("devices/getdevice")
-    Call<Device> getDevice(@Query("imei") String imei);
+    @GET("users/group")
+    Call<List<User>> getUsers(@Query("imei") String imei);
 
     @POST("users/addtogroup")
     Call<Empty> addUserToGroup(@Query("userid") String userid , @Query("imei") String imei);

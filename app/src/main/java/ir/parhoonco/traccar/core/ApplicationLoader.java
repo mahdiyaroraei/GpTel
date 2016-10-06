@@ -54,7 +54,9 @@ public class ApplicationLoader {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
-        api = ServiceGenerator.createService(TraccarAPI.class, "admin", "admin" , context);
+        String username = SharedPreferenceHelper.getSharedPreferenceString(context , "user_id" , "guest");
+        String password = SharedPreferenceHelper.getSharedPreferenceString(context , "api_key" , "hckrUVT5FhYdTMLw");
+        api = ServiceGenerator.createService(TraccarAPI.class, username , password , context);
 
         /*//Initializing our broadcast receiver
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
@@ -105,7 +107,15 @@ public class ApplicationLoader {
             context.startService(itent);
         }*/
 
-        sendLocalDataToServer();
+        try {
+            sendLocalDataToServer();
+        }catch (Exception e){}
+    }
+
+    public static void refreshAPI(){
+        String username = SharedPreferenceHelper.getSharedPreferenceString(context , "user_id" , "guest");
+        String password = SharedPreferenceHelper.getSharedPreferenceString(context , "api_key" , "hckrUVT5FhYdTMLw");
+        api = ServiceGenerator.createService(TraccarAPI.class, username , password , context);
     }
 
     private static void sendLocalDataToServer() {

@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 
 import ir.parhoonco.traccar.core.model.api.Error;
+import ir.parhoonco.traccar.ui.FragmentHelper;
 import ir.parhoonco.traccar.ui.dialog.ErrorDialog;
+import ir.parhoonco.traccar.ui.fragment.PhoneVerifyFragment;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -72,6 +74,13 @@ public class ServiceGenerator {
                                         ApplicationLoader.retrofit.responseBodyConverter(Error.class, new Annotation[0]);
                                 try {
                                     Error error = errorConverter.convert(ResponseBody.create(mediaType, body));
+                                    if (response.code() == 401){
+                                        SharedPreferenceHelper.setSharedPreferenceString(context, "api_key", null);
+                                        SharedPreferenceHelper.setSharedPreferenceString(context, "user_id", null);
+                                        SharedPreferenceHelper.setSharedPreferenceString(context, "default_device_imei", null);
+                                        ApplicationLoader.refreshAPI();
+                                        FragmentHelper.getInstance(context).addToStack(new PhoneVerifyFragment());
+                                    }
                                     dialog.showDialogMessage((Activity)context, error.getMessage());
                                 } catch (IOException e) {
                                     e.printStackTrace();

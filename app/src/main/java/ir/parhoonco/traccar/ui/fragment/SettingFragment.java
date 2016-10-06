@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ir.parhoonco.traccar.R;
+import ir.parhoonco.traccar.core.ApplicationLoader;
 import ir.parhoonco.traccar.core.SharedPreferenceHelper;
 import ir.parhoonco.traccar.ui.FragmentHelper;
 import ir.parhoonco.traccar.ui.LaunchActivity;
@@ -94,7 +95,9 @@ public class SettingFragment extends Fragment {
                     public void onClick(View view) {
                         dialog.dismiss();
                         SharedPreferenceHelper.setSharedPreferenceString(getContext(), "api_key", null);
+                        SharedPreferenceHelper.setSharedPreferenceString(getContext(), "user_id", null);
                         SharedPreferenceHelper.setSharedPreferenceString(getContext(), "default_device_imei", null);
+                        ApplicationLoader.refreshAPI();
                         FragmentHelper.getInstance(getContext()).addToStack(new PhoneVerifyFragment());
                     }
                 });

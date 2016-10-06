@@ -72,7 +72,7 @@ public class CarFragment extends Fragment {
     @Override
     public void onAttach(final Context context) {
         super.onAttach(context);
-        ((LaunchActivity)getActivity()).onTabClicked(R.id.carTab);
+        ((LaunchActivity) getActivity()).onTabClicked(R.id.carTab);
         defaultImei = SharedPreferenceHelper.getSharedPreferenceString(getContext(), "default_device_imei", null);
         if (defaultImei == null) {
             FragmentHelper.getInstance(getContext()).addToStack(new SelectDeviceFragment());
@@ -101,9 +101,11 @@ public class CarFragment extends Fragment {
 
         if (defaultDevice != null) {
             deviceNameTextView.setText(defaultDevice.getName());
+            if (defaultDevice.getDeviceInfo() != null) {
+                showDeviceInfo(defaultDevice.getDeviceInfo());
+                isMaster = defaultDevice.getDeviceInfo().ismaster();
+            }
         }
-        showDeviceInfo(defaultDevice.getDeviceInfo());
-        isMaster = defaultDevice.getDeviceInfo().ismaster();
         Call<DeviceInfo> deviceInfoCall = ApplicationLoader.api.getDeviceInfo(defaultImei);
         deviceInfoCall.enqueue(new Callback<DeviceInfo>() {
             @Override
@@ -234,11 +236,11 @@ public class CarFragment extends Fragment {
             temp_prefix = "-";
         }
         tempratureImageView.setImageResource(temp_drawable);
-        tempratureTextView.setText(temp_prefix + (int)deviceInfo.getTemperature() + "");
+        tempratureTextView.setText(temp_prefix + (int) deviceInfo.getTemperature() + "");
 
         drawView.setProgress(deviceInfo.getVoltage() / 15000f);
         NumberFormat df = new DecimalFormat("00.00");
-        batteryTextView.setText(df.format(deviceInfo.getVoltage() / 1000f )+ "");
+        batteryTextView.setText(df.format(deviceInfo.getVoltage() / 1000f) + "");
 
         if (deviceInfo.getEnginstatus() == 1) {
             powerImageView.setImageResource(R.drawable.turn_off);

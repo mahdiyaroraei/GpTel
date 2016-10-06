@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.List;
+
 import ir.parhoonco.traccar.R;
 import ir.parhoonco.traccar.core.ApplicationLoader;
 import ir.parhoonco.traccar.core.model.Empty;
@@ -34,15 +36,15 @@ public class AssignmentFragment extends Fragment {
 
         final LinearLayout layout = (LinearLayout) fragmentView.findViewById(R.id.scroll_layout);
 
-        Call<Device> deviceCall = ApplicationLoader.api.getDevice(CarFragment.defaultImei);
-        deviceCall.enqueue(new Callback<Device>() {
+        Call<List<User>> deviceCall = ApplicationLoader.api.getUsers(CarFragment.defaultImei);
+        deviceCall.enqueue(new Callback<List<User>>() {
             @Override
-            public void onResponse(Call<Device> call, Response<Device> response) {
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if (response.code() == 400) {
 
                 } else if (response.code() == 200) {
                     for (final User user
-                            : response.body().getUsers()) {
+                            : response.body()) {
                         final View userItem = inflater.inflate(R.layout.item_user_assgnment, null);
                         userItem.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -54,7 +56,7 @@ public class AssignmentFragment extends Fragment {
                                     @Override
                                     public void onClick(View view) {
                                         dialog.dismiss();
-                                        Call<Empty> masterCall = ApplicationLoader.api.setMaster(CarFragment.defaultImei, user.getPhonenumber(), true);
+                                        Call<Empty> masterCall = ApplicationLoader.api.setMaster(CarFragment.defaultImei, user.getUserid(), true);
                                         masterCall.enqueue(new Callback<Empty>() {
                                             @Override
                                             public void onResponse(Call<Empty> call, Response<Empty> response) {
@@ -79,14 +81,14 @@ public class AssignmentFragment extends Fragment {
                                 dialog.show();
                             }
                         });
-                        ((TextView) userItem.findViewById(R.id.phone_txt)).setText(user.getName() + " : " + user.getPhonenumber());
+                        ((TextView) userItem.findViewById(R.id.phone_txt)).setText(user.getName() + " : " + user.getUserid());
                         layout.addView(userItem);
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<Device> call, Throwable t) {
+            public void onFailure(Call<List<User>> call, Throwable t) {
 
             }
         });

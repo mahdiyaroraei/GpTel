@@ -309,15 +309,15 @@ public class VerificationFragment extends Fragment implements Callback<Verify> {
             submitBtn.setText("ارسال");
             submitBtn.setEnabled(true);
         } else if (response.code() == 200) {
+            SharedPreferenceHelper.setSharedPreferenceString(getContext(), "user_id", phone);
+            SharedPreferenceHelper.setSharedPreferenceString(getContext(), "api_key", response.body().getApikey());
+            ApplicationLoader.refreshAPI();
             CarFragment.devices = response.body().getDevices();
             timer.cancel();
             for (Device device :
                     response.body().getDevices()) {
                 device.save();
             }
-            SharedPreferenceHelper.setSharedPreferenceString(getContext(), "user_id", phone);
-//            SharedPreferenceHelper.setSharedPreferenceString(getContext(), "api_key", CryptHelper.getInstance().encrypt(response.body().getApikey()));
-            SharedPreferenceHelper.setSharedPreferenceString(getContext(), "api_key", response.body().getApikey());
 
             FragmentHelper.getInstance(getActivity()).addToStack(new CarFragment());
         }

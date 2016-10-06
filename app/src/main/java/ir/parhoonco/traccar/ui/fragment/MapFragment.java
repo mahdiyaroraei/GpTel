@@ -492,10 +492,10 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
     private void showHistory() {
         ((ViewGroup) popupLayout.getParent()).removeView(popupLayout);
 
-        final Call<Positions> positionsCall = ApplicationLoader.api.getPositions(CarFragment.defaultImei, startTime / 1000, endTime / 1000, 100, offset);
+        final Call<Positions> positionsCall = ApplicationLoader.api.getPositions(CarFragment.defaultImei, startTime / 1000, endTime / 1000, 100, offset * 100);
         positionsCallback = new Callback<Positions>() {
             @Override
-            public void onResponse(Call<Positions> call, Response<Positions> response) {
+            public void onResponse(Call<Positions> call, final Response<Positions> response) {
                 try {
                     if (response.code() == 200 && response.body().getPositions().size() > 0) {
                         removeMarkers();
@@ -506,8 +506,11 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
                         positionOffsetLayout.findViewById(R.id.next_img).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                offset++;
-                                positionsCall.clone().enqueue(positionsCallback);
+                                if (offset + 1 < response.body().getPositionscount() / 100f) {
+                                    offset++;
+                                    Call<Positions> positionsCall = ApplicationLoader.api.getPositions(CarFragment.defaultImei, startTime / 1000, endTime / 1000, 100, offset * 100);
+                                    positionsCall.enqueue(positionsCallback);
+                                }
                             }
                         });
 
@@ -516,7 +519,8 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
                             public void onClick(View view) {
                                 if (offset >= 1) {
                                     offset--;
-                                    positionsCall.clone().enqueue(positionsCallback);
+                                    Call<Positions> positionsCall = ApplicationLoader.api.getPositions(CarFragment.defaultImei, startTime / 1000, endTime / 1000, 100, offset * 100);
+                                    positionsCall.enqueue(positionsCallback);
                                 }
                             }
                         });
@@ -857,7 +861,7 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
             } catch (Exception e) {
             }
         }
-        if (positionOffsetLayout != null){
+        if (positionOffsetLayout != null) {
             try {
                 ((ViewGroup) positionOffsetLayout.getParent()).removeView(positionOffsetLayout);
             } catch (Exception e) {
@@ -963,7 +967,7 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
             CarFragment.defaultDevice.setPosition(devicePosition);
             CarFragment.defaultDevice.save();
         }
-        if (devicePosition.getLat() != 0) {
+        if (devicePosition != null && devicePosition.getLat() != 0) {
             removeMarkers();
             mapView.setCenter(new LatLong(devicePosition.getLat(), devicePosition.getLon()));
             addMarker(devicePosition, other_pin_drawable);

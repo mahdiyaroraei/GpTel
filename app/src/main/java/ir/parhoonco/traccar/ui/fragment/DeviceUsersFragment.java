@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.List;
+
 import ir.parhoonco.traccar.R;
 import ir.parhoonco.traccar.core.ApplicationLoader;
 import ir.parhoonco.traccar.core.TeltonikaSmsProtocol;
@@ -38,15 +40,15 @@ public class DeviceUsersFragment extends Fragment {
 
         final LinearLayout layout = (LinearLayout) fragmentView.findViewById(R.id.scroll_layout);
 
-        Call<Device> deviceCall = ApplicationLoader.api.getDevice(CarFragment.defaultImei);
-        deviceCall.enqueue(new Callback<Device>() {
+        Call<List<User>> deviceCall = ApplicationLoader.api.getUsers(CarFragment.defaultImei);
+        deviceCall.enqueue(new Callback<List<User>>() {
             @Override
-            public void onResponse(Call<Device> call, Response<Device> response) {
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if (response.code() == 400) {
 
                 } else if (response.code() == 200) {
                     for (final User user
-                            : response.body().getUsers()) {
+                            : response.body()) {
                         final View userItem = inflater.inflate(R.layout.item_user, null);
                         userItem.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -58,7 +60,7 @@ public class DeviceUsersFragment extends Fragment {
                                     @Override
                                     public void onClick(View view) {
                                         dialog.dismiss();
-                                        Call<Empty> masterCall = ApplicationLoader.api.setMaster(CarFragment.defaultImei, user.getPhonenumber(), false);
+                                        Call<Empty> masterCall = ApplicationLoader.api.setMaster(CarFragment.defaultImei, user.getUserid(), false);
                                         masterCall.enqueue(new Callback<Empty>() {
                                             @Override
                                             public void onResponse(Call<Empty> call, Response<Empty> response) {
@@ -89,7 +91,7 @@ public class DeviceUsersFragment extends Fragment {
                         userItem.findViewById(R.id.remove_img).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Call<Empty> removeCall = ApplicationLoader.api.removeUserFromGroup(user.getPhonenumber(), CarFragment.defaultImei);
+                                Call<Empty> removeCall = ApplicationLoader.api.removeUserFromGroup(user.getUserid(), CarFragment.defaultImei);
                                 removeCall.enqueue(new Callback<Empty>() {
                                     @Override
                                     public void onResponse(Call<Empty> call, Response<Empty> response) {
@@ -105,14 +107,14 @@ public class DeviceUsersFragment extends Fragment {
                                 });
                             }
                         });
-                        ((TextView) userItem.findViewById(R.id.phone_txt)).setText(user.getName() + " : " + user.getPhonenumber());
+                        ((TextView) userItem.findViewById(R.id.phone_txt)).setText(user.getName() + " : " + user.getUserid());
                         layout.addView(userItem);
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<Device> call, Throwable t) {
+            public void onFailure(Call<List<User>> call, Throwable t) {
 
             }
         });

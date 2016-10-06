@@ -6,22 +6,22 @@ import com.orm.SugarRecord;
  * Created by mao on 9/4/2016.
  */
 public class User extends SugarRecord{
-    String phonenumber;
+    String userid;
     String name;
     boolean ismaster;
 
-    public User(String phonenumber, String name, boolean ismaster) {
-        this.phonenumber = phonenumber;
+    public User(String userid, String name, boolean ismaster) {
+        this.userid = userid;
         this.name = name;
         this.ismaster = ismaster;
     }
 
-    public String getPhonenumber() {
-        return phonenumber;
+    public String getUserid() {
+        return userid;
     }
 
-    public void setPhonenumber(String phonenumber) {
-        this.phonenumber = phonenumber;
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
     public String getName() {
