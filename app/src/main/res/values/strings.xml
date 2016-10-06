@@ -111,5 +111,8 @@
     <string name="setautogeofence">تنظیم وضعیت محدوده خودکار</string>
     <string name="getmaster">دریافت سرگروه</string>
     <string name="setmaster">تنظیم سرگروه</string>
+    <string name="gps_network_not_enabled">مکان یاب شما خاموش است، آیا تمایل دارید روشن کنید؟</string>
+    <string name="open_location_settings">بله</string>
+    <string name="Cancel">خیر</string>
 
 </resources>

@@ -2,16 +2,20 @@ package ir.parhoonco.traccar.ui.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.Settings;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -108,6 +112,12 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
     private ArrayList<Layer> markers = new ArrayList<>();
     private ThinDownloadManager downloadManager;
     private AndroidMarker.OnMarkerTap onMarkerTapInstance;
+    private View enableTab;
+    private TextView distanceTextView;
+    private RelativeLayout positionOffsetLayout;
+    private int offset = 0;
+    private Callback<Positions> positionsCallback;
+
 
     @Override
     public void onAttach(Context context) {
@@ -237,7 +247,18 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
             this.mapView.setZoomLevel((byte) 15);
             view.findViewById(R.id.power).setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
+                public void onClick(View v) {
+                    if (enableTab != null) {
+                        TransitionDrawable transition = (TransitionDrawable) enableTab.getBackground();
+                        transition.reverseTransition(200);
+                        ((TextView) ((ViewGroup) enableTab).getChildAt(1)).setTextColor(Color.parseColor("#5dff04"));
+                    }
+                    TransitionDrawable transition = (TransitionDrawable) v.getBackground();
+                    transition.startTransition(200);
+                    ((TextView) ((ViewGroup) v).getChildAt(1)).setTextColor(Color.WHITE);
+
+                    enableTab = v;
+
                     removeMarkers();
                     addMarker(devicePosition, other_pin_drawable);
                     mapView.setCenter(new LatLong(devicePosition.getLat(), devicePosition.getLon()));
@@ -309,6 +330,18 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
         view.findViewById(R.id.mapHistoryTab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (enableTab != null) {
+                    TransitionDrawable transition = (TransitionDrawable) enableTab.getBackground();
+                    transition.reverseTransition(200);
+                    ((TextView) ((ViewGroup) enableTab).getChildAt(1)).setTextColor(Color.parseColor("#5dff04"));
+                }
+                TransitionDrawable transition = (TransitionDrawable) v.getBackground();
+                transition.startTransition(200);
+                ((TextView) ((ViewGroup) v).getChildAt(1)).setTextColor(Color.WHITE);
+
+                enableTab = v;
+
                 removeMarkers();
                 if (isPopupShow == false) {
                     isPopupShow = true;
@@ -380,27 +413,78 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
         view.findViewById(R.id.distanceTab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (enableTab != null) {
+                    TransitionDrawable transition = (TransitionDrawable) enableTab.getBackground();
+                    transition.reverseTransition(200);
+                    ((TextView) ((ViewGroup) enableTab).getChildAt(1)).setTextColor(Color.parseColor("#5dff04"));
+                }
+                TransitionDrawable transition = (TransitionDrawable) v.getBackground();
+                transition.startTransition(200);
+                ((TextView) ((ViewGroup) v).getChildAt(1)).setTextColor(Color.WHITE);
+
+                enableTab = v;
+
                 removeMarkers();
-                dialog = new SuccessDialog();
-                dialog.showDialog(getActivity(), "لطفا تا دریافت موقعیت مکانی گوشی منتظر بمانید...");
-                dialog.dialogButton.setVisibility(View.INVISIBLE);
-                LocationController.getInstance(getContext()).requestLocation(new LocationController.LocationInterface() {
-                    @Override
-                    public void onUpdate(Location location) {
-                        try {
-                            dialog.dimmisDialog();
-                            TextView distanceTextView = new TextView(getContext(), null);
-                            distanceTextView.setTextColor(Color.GREEN);
-                            distanceTextView.setBackgroundResource(R.drawable.bg_shadow);
-                            float dist = showDistance(location);
-                            if (dist != 0.0) {
-                                distanceTextView.setText(dist + "متر");
-                                ((LinearLayout) view).addView(distanceTextView);
-                            }
-                        } catch (Exception e) {
-                        }
+
+                LocationManager lm = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+                boolean gps_enabled = false;
+                boolean network_enabled = false;
+
+                try {
+                    try {
+                        gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                    } catch (Exception ex) {
                     }
-                });
+
+                    network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+                } catch (Exception ex) {
+                }
+
+                if (!gps_enabled && !network_enabled) {
+                    // notify user
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setMessage(getContext().getResources().getString(R.string.gps_network_not_enabled));
+                    dialog.setPositiveButton(getContext().getResources().getString(R.string.open_location_settings), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                            // TODO Auto-generated method stub
+                            Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            getContext().startActivity(myIntent);
+                            //get gps
+                        }
+                    });
+                    dialog.setNegativeButton(getContext().getString(R.string.Cancel), new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                        }
+                    });
+                    dialog.show();
+                } else {
+
+                    dialog = new SuccessDialog();
+                    dialog.showDialog(getActivity(), "لطفا تا دریافت موقعیت مکانی گوشی منتظر بمانید...");
+                    dialog.dialogButton.setVisibility(View.INVISIBLE);
+                    LocationController.getInstance(getContext()).requestLocation(new LocationController.LocationInterface() {
+                        @Override
+                        public void onUpdate(Location location) {
+                            try {
+                                dialog.dimmisDialog();
+                                distanceTextView = new TextView(getContext(), null);
+                                distanceTextView.setTextColor(Color.WHITE);
+                                distanceTextView.setBackgroundColor(Color.parseColor("#4b862d"));
+                                distanceTextView.setPadding(10, 10, 10, 10);
+                                float dist = showDistance(location);
+                                if (dist != 0.0) {
+                                    distanceTextView.setText(dist + " متر ");
+                                    ((RelativeLayout) view.findViewById(R.id.mapLayout)).addView(distanceTextView);
+                                }
+                                mapView.setCenter(new LatLong(location.getLatitude(), location.getLongitude()));
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+                }
             }
         });
     }
@@ -408,13 +492,34 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
     private void showHistory() {
         ((ViewGroup) popupLayout.getParent()).removeView(popupLayout);
 
-        Call<Positions> positionsCall = ApplicationLoader.api.getPositions(CarFragment.defaultImei, startTime / 1000, endTime / 1000, 100, 0);
-//        Call<List<Position>> positionsCall = ApplicationLoader.api.getPositions(CarFragment.defaultImei, 1474159507, 1474194906);
-        positionsCall.enqueue(new Callback<Positions>() {
+        final Call<Positions> positionsCall = ApplicationLoader.api.getPositions(CarFragment.defaultImei, startTime / 1000, endTime / 1000, 100, offset);
+        positionsCallback = new Callback<Positions>() {
             @Override
             public void onResponse(Call<Positions> call, Response<Positions> response) {
                 try {
                     if (response.code() == 200 && response.body().getPositions().size() > 0) {
+                        removeMarkers();
+                        positionOffsetLayout = (RelativeLayout) getLayoutInflater(null).inflate(R.layout.position_controller_item, null);
+                        ((RelativeLayout) view.findViewById(R.id.mapLayout)).addView(positionOffsetLayout);
+                        ((TextView) positionOffsetLayout.findViewById(R.id.pager_txt)).setText(offset + "");
+
+                        positionOffsetLayout.findViewById(R.id.next_img).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                offset++;
+                                positionsCall.clone().enqueue(positionsCallback);
+                            }
+                        });
+
+                        positionOffsetLayout.findViewById(R.id.back_img).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (offset >= 1) {
+                                    offset--;
+                                    positionsCall.clone().enqueue(positionsCallback);
+                                }
+                            }
+                        });
 
                         final List<Position> latLongs = response.body().getPositions();
 
@@ -458,7 +563,7 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
                                         try {
                                             for (LatLong latLong :
                                                     divide(new LatLong(latLongs.get(counter).getLat(), latLongs.get(counter).getLon())
-                                                            , new LatLong(latLongs.get(counter + 1).getLat(), latLongs.get(counter + 1).getLon()), 6)) {
+                                                            , new LatLong(latLongs.get(counter + 1).getLat(), latLongs.get(counter + 1).getLon()), 2)) {
                                                 marker.setLatLong(latLong);
                                                 rotateMarker(marker, angleFromCoordinate(latLongs.get(counter).getLat(), latLongs.get(counter).getLon(),
                                                         latLongs.get(counter + 1).getLat(), latLongs.get(counter + 1).getLon()));
@@ -492,13 +597,8 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
             public void onFailure(Call<Positions> call, Throwable t) {
                 String sad = "";
             }
-        });
-        SocketController.getInstance().getDevicePositionHistory(CarFragment.defaultImei, startTime, endTime, new SocketController.CallBackResponse() {
-            @Override
-            public void didReceiveResponse(boolean success, Map<String, Object> params) {
-
-            }
-        });
+        };
+        positionsCall.enqueue(positionsCallback);
     }
 
     private double bearing(double lat1, double lng1, double lat2, double lng2) {
@@ -744,6 +844,24 @@ public class MapFragment extends Fragment implements DatePickerDialog.OnDateSetL
         for (Layer layer :
                 markers) {
             this.mapView.getLayerManager().getLayers().remove(layer);
+        }
+        if (isPopupShow) {
+            try {
+                ((ViewGroup) popupLayout.getParent()).removeView(popupLayout);
+            } catch (Exception e) {
+            }
+        }
+        if (distanceTextView != null) {
+            try {
+                ((ViewGroup) distanceTextView.getParent()).removeView(distanceTextView);
+            } catch (Exception e) {
+            }
+        }
+        if (positionOffsetLayout != null){
+            try {
+                ((ViewGroup) positionOffsetLayout.getParent()).removeView(positionOffsetLayout);
+            } catch (Exception e) {
+            }
         }
 
         markers = new ArrayList<>();
